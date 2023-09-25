@@ -6,42 +6,41 @@ let posToMv;
 
 function setup() {
   setCanvasContainer('canvas', 3, 2, true);
-  background('white');
+  background('skyblue');
   pos = createVector(random(width), random(height));
-  vel = createVector();
+  vel = createVector(0, 0);
+  acc = p5.Vector.random2D();
+  acc.mult(0.1);
   mv = createVector();
   posToMv = createVector();
-  acc = createVector();
 }
 
 function draw() {
-  background('salmon');
+  background('skyblue');
   update();
   checkEdges();
   display();
-
-  strokeWeight(3);
-
   mv.set(mouseX, mouseY);
-
+  w3();
+}
+function w3() {
   posToMv = p5.Vector.sub(mv, pos);
+
+  strokeWeight(2);
+
   stroke('white');
   translate(pos.x, pos.y);
   line(0, 0, posToMv.x, posToMv.y);
 
-  strokeWeight(2);
-
-  stroke('aqua');
+  stroke('lime');
   line(0, 0, vel.x * 10, vel.y * 10);
 
   stroke('red');
   line(0, 0, acc.x * 100, acc.y * 100);
 }
-
 function update() {
   acc = p5.Vector.random2D();
   acc.mult(1);
-
   vel.add(acc);
   vel.limit(5);
   pos.add(vel);

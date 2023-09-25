@@ -6,43 +6,51 @@ let posToMv;
 
 function setup() {
   setCanvasContainer('canvas', 3, 2, true);
-  background('white');
+  background('skyblue');
   pos = createVector(random(width), random(height));
-  vel = createVector();
+  vel = createVector(0, 0);
   acc = createVector();
+  acc.mult(0.1);
   mv = createVector();
   posToMv = createVector();
 }
 
 function draw() {
-  background('salmon');
+  background('skyblue');
   update();
+  //   checkEdges();
   display();
-
   mv.set(mouseX, mouseY);
-  acc.set(posToMv.x, posToMv.y);
+  w3();
+}
 
+// acc.set(posToMv.x, posToMv.y);
+
+function w3() {
+  acc = p5.Vector.sub(mv, pos);
   translate(pos.x, pos.y);
   posToMv = p5.Vector.sub(mv, pos);
-
-  strokeWeight(1);
-  stroke('black');
-  line(0, 0, posToMv.x, posToMv.y);
+  acc.normalize();
 
   strokeWeight(2);
-  stroke('blue');
-  line(0, 0, vel.x * 10, vel.y * 10);
+
+  stroke('white');
+  line(0, 0, posToMv.x, posToMv.y);
+
+  stroke('green');
+  line(0, 0, vel.x * 5, vel.y * 5);
+
+  // acc.normalize();
+  // acc.mult(0.1);
 
   if (mouseIsPressed === true) {
-    acc.mult(-0.5);
+    acc.mult(-0.1);
   } else {
-    acc.normalize();
     acc.mult(0.1);
   }
 
-  strokeWeight(4);
   stroke('red');
-  line(0, 0, acc.x * 0.1, acc.y * 0.1);
+  line(0, 0, acc.x * 50, acc.y * 50);
 }
 
 function update() {
