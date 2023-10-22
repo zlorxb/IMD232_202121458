@@ -1,24 +1,49 @@
-let mover;
-let gravity;
-let wind;
+let emitters = [];
+let gravity = 0;
+let repeller;
 
 function setup() {
   setCanvasContainer('canvas', 3, 2, true);
+
+  for (let i = 0; i < 5; i++) {
+    emitters.push(new Emitter((width / 6) * (i + 1), 20));
+  }
+
+  gravity = createVector(0, 0.05);
+
+  repeller = new Repeller(width / 2, height / 2, 5000);
+
   background(255);
-  mover = new MoverNoMass(width / 2, height / 2, 50);
-  gravity = createVector(0, 0.1);
-  wind = createVector(0.2, 0);
 }
 
 function draw() {
-  background(255);
-
-  mover.addAcc(gravity);
-  if (mouseIsPressed && isMouseInsideCanvas()) {
-    mover.addAcc(wind);
+  for (let i = 0; i < emitters.length; i++) {
+    emitters[i].addParticle();
   }
-  mover.update();
-  mover.checkEdges();
-  mover.display();
-  mover.displayVectors();
+
+  background(255);
+  for (let i = 0; i < emitters.length; i++) {
+    emitters[i].applyGravity(gravity);
+    emitters[i].applyRepeller(repeller);
+    emitters[i].update();
+    emitters[i].display();
+  }
+
+  repeller.display();
+}
+
+function mouseMoved() {
+  repeller.mouseMoved(mouseX, mouseY);
+}
+
+function mousePressed() {
+  repeller.mousePressed(mouseX, mouseY);
+}
+
+function mouseDragged() {
+  repeller.mouseDragged(mouseX, mouseY);
+}
+
+function mouseReleased() {
+  repeller.mouseReleased();
 }

@@ -1,31 +1,31 @@
-let emitter;
-let particle;
-let g;
+// let particle;
+let particleArray = [];
+let gravity = 0;
 
 function setup() {
-  setCanvasContainer('canvasGoesHere', 2, 1, true);
+  setCanvasContainer('canvas', 3, 2, true);
 
-  colorMode(MSL);
-  particle = new Ball(width / 2, 0, 1, 0, 100, 50);
+  // particle = new Particle(width / 2, 20);
+  gravity = createVector(0, 0.1);
 
-  emitter = new Emitter(width / 2, 0);
-
-  g = createVector(0, 0.1);
-
-  background('white');
+  background(255);
 }
 
 function draw() {
-  background('white');
-  const scaledG = p5.Vector.mult(g, partice.mass);
-  particle.applyForce(scaledG);
-  particle.update();
-  particle.display();
+  particleArray.push(new Particle(width / 2, 20));
 
-  emitter.createBall();
-  emitter.applyGravity(scaledG);
-  emitter.update();
-  emitter.display();
+  background(255);
+  for (let a = 0; a < particleArray.length; a++) {
+    particleArray[a].applyForce(gravity);
+    particleArray[a].update();
+    particleArray[a].display();
+  }
 
-  // console.log(emitter.balls.)
+  for (let a = particleArray.length - 1; a >= 0; a--) {
+    if (particleArray[a].isDead()) {
+      particleArray.splice(a, 1);
+    }
+  }
+
+  console.log(particleArray.length);
 }

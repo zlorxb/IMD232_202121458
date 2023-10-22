@@ -1,35 +1,33 @@
-let moverA;
-let moverB;
-let gravity;
-let wind;
+let emitter;
+let floatingForce;
+let windForce;
+let texture;
+
+function preload() {
+  texture = loadImage('data/texture.png');
+}
 
 function setup() {
-  setCanvasContainer('canvas', 3, 2, true);
-  background(255);
-  moverA = new MoverWithMass(width / 3, height / 2, 10);
-  moverB = new MoverWithMass((2 * width) / 3, height / 2, 1);
-  gravity = createVector(0, 0.1);
-  wind = createVector(0.2, 0);
+  setCanvasContainer('canvas', 2, 1, true);
+
+  emitter = new Emitter(width / 2, height - 50);
+  floatingForce = createVector(0, -0.005);
+  windForce = createVector();
+
+  imageMode(CENTER);
+  background(16);
 }
 
 function draw() {
-  background(255);
+  let windX = map(mouseX, 0, width - 1, -1, 1);
+  windX *= 0.05;
+  windForce.set(windX, 0);
+  emitter.addParticle();
+  emitter.applyForce(floatingForce);
+  emitter.applyForce(windForce);
+  emitter.update();
 
-  moverA.applyForce(gravity);
-  if (mouseIsPressed && isMouseInsideCanvas()) {
-    moverA.applyForce(wind);
-  }
-  moverA.update();
-  moverA.checkEdges();
-  moverA.display();
-  moverA.displayVectors();
+  background(16);
 
-  moverB.applyForce(gravity);
-  if (mouseIsPressed && isMouseInsideCanvas()) {
-    moverB.applyForce(wind);
-  }
-  moverB.update();
-  moverB.checkEdges();
-  moverB.display();
-  moverB.displayVectors();
+  emitter.display();
 }
