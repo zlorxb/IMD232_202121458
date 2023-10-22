@@ -13,6 +13,7 @@ function draw() {
   particleArray.push(new Particle(random(width), -10));
 
   background('lightsteelblue');
+
   for (let a = 0; a < particleArray.length; a++) {
     particleArray[a].applyForce(gravity);
     particleArray[a].update();

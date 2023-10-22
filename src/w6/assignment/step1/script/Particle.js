@@ -5,11 +5,11 @@ class Particle {
     this.vel = createVector(0, 3);
     this.acc = createVector(0, 0);
 
-    this.rad = 12;
+    this.rad = 7;
     this.lifeSpan = 255;
 
     //파티클 랜덤 색
-    this.color = color(random(255), random(255), random(255));
+    this.color = color(random(150), random(200), random(200), 180);
 
     this.rotationA = random(360);
     this.rotationS = random(-0.1, 0.1);
@@ -36,7 +36,7 @@ class Particle {
     //파티클 회전각도로 회전
     rotate(this.rotationA);
     rectMode(CENTER);
-    rect(0, 0, this.rad, this.rad);
+    rect(0, 0, this.rad * 2, this.rad * 2);
     pop();
   }
 
