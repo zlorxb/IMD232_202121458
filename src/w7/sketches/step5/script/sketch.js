@@ -1,77 +1,76 @@
-let dandelion;
-let seeds = [];
+let raindrop;
+let splashes = [];
 
 function setup() {
   createCanvas(400, 400);
-  dandelion = new Dandelion(width / 2, height - 20);
+  raindrop = new Raindrop(random(width), -20, 3);
 }
 
 function draw() {
   background(220);
 
-  // Update and display the dandelion
-  dandelion.display();
+  // 비 방울을 이동시키고 표현
+  raindrop.update();
+  raindrop.display();
 
-  // Update and display each seed
-  for (let seed of seeds) {
-    seed.update();
-    seed.display();
+  // 비 방울이 땅에 닿았을 때 파동을 생성
+  if (raindrop.reachedGround()) {
+    let splash = new Splash(raindrop.x, height);
+    splashes.push(splash);
+    raindrop = new Raindrop(random(width), -20, 3);
   }
 
-  // Remove seeds that have gone out of the canvas
-  seeds = seeds.filter((seed) => !seed.isOutOfCanvas());
-}
-
-function mousePressed() {
-  // Create a new seed at the dandelion's position and add it to the array
-  let seed = new Seed(dandelion.pos.x, dandelion.pos.y);
-  seeds.push(seed);
-
-  // Make the dandelion blow
-  dandelion.blow();
-}
-
-class Dandelion {
-  constructor(x, y) {
-    this.pos = createVector(x, y);
-    this.size = 40;
-    this.blown = false;
-  }
-
-  display() {
-    fill(255, 200, 50);
-    noStroke();
-    ellipse(this.pos.x, this.pos.y, this.size, this.size);
-  }
-
-  blow() {
-    this.blown = true;
+  // 파동을 업데이트하고 표현
+  for (let i = splashes.length - 1; i >= 0; i--) {
+    splashes[i].update();
+    splashes[i].display();
+    if (splashes[i].isFinished()) {
+      splashes.splice(i, 1);
+    }
   }
 }
 
-class Seed {
-  constructor(x, y) {
-    this.pos = createVector(x, y);
-    this.vel = p5.Vector.random2D().mult(random(2, 5));
-    this.size = 5;
+class Raindrop {
+  constructor(x, y, speed) {
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
   }
 
   update() {
-    this.pos.add(this.vel);
+    this.y += this.speed;
   }
 
   display() {
-    fill(200, 200, 200);
-    noStroke();
-    ellipse(this.pos.x, this.pos.y, this.size, this.size);
+    stroke(0, 0, 255);
+    line(this.x, this.y, this.x, this.y + 10);
   }
 
-  isOutOfCanvas() {
-    return (
-      this.pos.x < 0 ||
-      this.pos.x > width ||
-      this.pos.y < 0 ||
-      this.pos.y > height
-    );
+  reachedGround() {
+    return this.y >= height;
+  }
+}
+
+class Splash {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.r = 0;
+    this.alpha = 255;
+  }
+
+  update() {
+    this.r += 2;
+    this.alpha -= 5;
+  }
+
+  display() {
+    noFill();
+    stroke(0, 0, 255, this.alpha);
+    ellipse(this.x, this.y, this.r * 2);
+  }
+
+  isFinished() {
+    return this.alpha <= 0;
   }
 }
