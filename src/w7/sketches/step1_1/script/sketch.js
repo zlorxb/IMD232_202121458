@@ -1,5 +1,5 @@
 let vehicle;
-
+let mVec;
 let debug = true;
 
 function setup() {
@@ -15,7 +15,7 @@ function setup() {
 }
 
 function draw() {
-  background('lightsteelblue');
+  background(255);
   mVec.set(mouseX, mouseY);
   vehicle.seek(mVec);
   vehicle.update();

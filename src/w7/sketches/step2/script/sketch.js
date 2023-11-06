@@ -1,31 +1,46 @@
-let emitter;
-let particle;
-let g;
+let vehicleA;
+let vehicleB;
+let mVec;
 
 function setup() {
-  setCanvasContainer('canvasGoesHere', 2, 1, true);
+  setCanvasContainer('canvas', 3, 2, true);
 
-  colorMode(MSL);
-  particle = new Ball(width / 2, 0, 1, 0, 100, 50);
+  colorMode(HSL, 360, 100, 100);
 
-  emitter = new Emitter(width / 2, 0);
+  vehicleA = new Vehicle(
+    width / 2,
+    height / 2,
+    1,
+    20,
+    10,
+    0.1,
+    color(0, 100, 50)
+  );
 
-  g = createVector(0, 0.1);
+  vehicleB = new Vehicle(
+    width / 2,
+    height / 2,
+    1,
+    20,
+    10,
+    0.1,
+    color(120, 100, 50)
+  );
+  mVec = createVector();
 
-  background('white');
+  background(255);
 }
 
 function draw() {
-  background('white');
-  const scaledG = p5.Vector.mult(g, partice.mass);
-  particle.applyForce(scaledG);
-  particle.update();
-  particle.display();
+  mVec.set(mouseX, mouseY);
 
-  emitter.createBall();
-  emitter.applyGravity(scaledG);
-  emitter.update();
-  emitter.display();
-
-  // console.log(emitter.balls.)
+  vehicleA.seek(mVec);
+  vehicleB.flee(mVec);
+  vehicleA.update();
+  vehicleB.update();
+  vehicleA.borderInfinite();
+  vehicleB.borderInfinite();
+  background(255);
+  vehicleA.display();
+  vehicleB.display();
 }
