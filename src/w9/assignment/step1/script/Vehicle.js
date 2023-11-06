@@ -139,11 +139,10 @@ class Vehicle {
     //화면에 물체 표시
     push();
     translate(this.pos.x, this.pos.y);
-    //중심 위치 변경
-    rotate(this.vel.heading()); //회전
+    rotate(this.vel.heading());
     noStroke();
     fill(this.color);
-    beginShape(); //도형 만들기
+    beginShape();
     vertex(this.rad, 0);
     vertex(this.rad * cos(radians(-135)), this.rad * sin(radians(-135)));
     vertex(0, 0);

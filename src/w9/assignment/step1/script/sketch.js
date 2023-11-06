@@ -8,7 +8,7 @@ function setup() {
   //화면에 캔버스 생성하고 설정
   colorMode(HSL, 360, 100, 100, 100);
   //색상모드 HSL로 설정
-  background('lightsteelblue'); //배경색
+  background('lightsteelblue');
   traffic = new Traffic();
   // Traffic 클래스의 객체 생성, 변수에 할당
   for (let n = 0; n < 10; n++) {
@@ -19,7 +19,7 @@ function setup() {
 }
 
 function draw() {
-  background('lightsteelblue'); //배경색
+  background('lightsteelblue');
   traffic.run();
   //traffic 업데이트, 화면에 표시
 }
